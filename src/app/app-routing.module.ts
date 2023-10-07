@@ -5,7 +5,7 @@ import { MissionSimulationComponent } from './mission-simulation/mission-simulat
 
 const routes: Routes = [
   {
-    path: 'mission_planning',
+    path: '',
     component: MissionPlanningComponent,
   },
   {

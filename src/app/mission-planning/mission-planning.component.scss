@@ -48,3 +48,19 @@
   top: 50%;
   left: 0;
 }
+
+#bottom_left_canvas_div {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 30px;
+  color: dodgerblue;
+}
+
+#bottom_right_canvas_div {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 30px;
+  color: bisque;
+}
