@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import flightData from '../assets/GMAT_Earth_to_Jupiter.json';
+import flightData from '../assets/GMAT_Earth_to_Jupiter.json'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,13 +21,15 @@ export class AppComponent implements OnInit {
 
     const canvas = document.getElementById('canvas-box');
     const scene = new THREE.Scene();
-    const earthMaterial = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load('../assets/earth2.jpg'),
-    });
-    const jupiterMaterial = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load('../assets/jupiterHD.jpg'),
-    });
     const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
+
+    const galaxyGeometry = new THREE.SphereGeometry(24000, 640, 640);
+    const galaxyMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load('../assets/stars_and_milky.jpg'),
+      side: THREE.BackSide,
+    })
+    const galaxyMesh = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
+    // scene.add(galaxyMesh);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
@@ -38,6 +40,9 @@ export class AppComponent implements OnInit {
     pointLight.position.z = 2;
     scene.add(pointLight);
 
+    const earthMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load('../assets/earth2.jpg'),
+    });
     const earth = new THREE.Mesh(
       new THREE.SphereGeometry(100),
       earthMaterial
@@ -49,18 +54,43 @@ export class AppComponent implements OnInit {
     // earth.position.y = flightData.earthCoordinates.Y;
     // earth.position.z = flightData.earthCoordinates.Z;
 
+    const jupiterMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load('../assets/jupiterHD.jpg'),
+    });
     const jupiter = new THREE.Mesh(
       new THREE.SphereGeometry(1100),
       jupiterMaterial
     );
     jupiter.position.x = flightData.jupiterCoordinates.X -7100;
     jupiter.position.y = flightData.jupiterCoordinates.Y;
-    jupiter.position.z = flightData.jupiterCoordinates.Z-1300;
+    jupiter.position.z = flightData.jupiterCoordinates.Z;
+
+    const europaMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load('../assets/europa.jpg'),
+    });
+    const europa = new THREE.Mesh(
+      new THREE.SphereGeometry(1100 / 44.79),
+      europaMaterial
+    );
+    europa.position.x = flightData.jupiterCoordinates.X + 2000;
+    europa.position.y = flightData.jupiterCoordinates.Y + 2000;
+    europa.position.z = flightData.jupiterCoordinates.Z + 2000;
+
+    const moonMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load('../assets/moon.jpg'),
+    });
+    const moon = new THREE.Mesh(
+      new THREE.SphereGeometry(25),
+      moonMaterial
+    );
+    moon.position.x = earth.position.x - 1500;
+    moon.position.y = earth.position.y;
+    moon.position.x = earth.position.z - 1500;
     // jupiter.position.x = flightData.jupiterCoordinates.X;
     // jupiter.position.y = flightData.jupiterCoordinates.Y;
     // jupiter.position.z = flightData.jupiterCoordinates.Z;
 
-    scene.add(earth, jupiter);
+    scene.add(earth, jupiter, moon, europa);
 
     const canvasSizes = {
       width: window.innerWidth,
@@ -102,7 +132,6 @@ export class AppComponent implements OnInit {
     });
     const clock = new THREE.Clock();
     const controls = new OrbitControls(camera, renderer.domElement);
-    console.log(this.totalFlightSteps);
 
     const drawingInterval = setInterval(() => {
       camera.position.x +=50;
@@ -123,9 +152,16 @@ export class AppComponent implements OnInit {
       const line = new THREE.Line(geometry, lineMaterial);
       scene.add(line);
       this.flightStep++;
-      console.log(this.flightStep);
-     
-    }, 300);
+      if (this.flightStep === this.totalFlightSteps) {
+        console.log(flightData.flightCoordinates[this.flightStep - 1].X)
+        console.log(flightData.flightCoordinates[this.flightStep - 1].Y)
+        console.log(flightData.flightCoordinates[this.flightStep - 1].Z)
+        console.log(flightData.jupiterCoordinates.X)
+        console.log(flightData.jupiterCoordinates.Y)
+        console.log(flightData.jupiterCoordinates.Z)
+        clearInterval(drawingInterval);
+      }
+    }, 200);
 
     const animateGeometry = () => {
       const elapsedTime = clock.getElapsedTime();
