@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="innerContainer">
+    <h2>Plan your mission</h2>
+    <div class="menu">
+      <div>
+        <span>Departure from:</span>
+        <select>
+          <option>Earth</option>
+        </select>
+      </div>
+      <div>
+        <span>Destination:</span>
+        <select>
+          <option>Europa</option>
+        </select>
+      </div>
+      <button (click)="rotateCamera()">Plot my journey!</button>
+    </div>
+  </div>
+  <canvas id="canvas-box" class="canvas">
+  </canvas>
+  <canvas id="bottom_left_canvas" class="bottom_left_canvas">
+  </canvas>
+  <canvas id="bottom_right_canvas" class="bottom_right_canvas">
+  </canvas>
+</div>
