@@ -10,6 +10,8 @@ import flightData from '../assets/GMAT_Earth_to_Jupiter.json';
 
 export class AppComponent implements OnInit {
   radianConversion = 0.01745328627927;
+  totalFlightSteps = flightData.flightCoordinates.length;
+  points = [];
   ngOnInit(): void {
     this.createThreeJsBox();
   }
@@ -24,6 +26,13 @@ export class AppComponent implements OnInit {
     const jupiterMaterial = new THREE.MeshStandardMaterial({
       map: new THREE.TextureLoader().load('../assets/jupiterHD.jpg'),
     });
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
+
+    const geometry = new THREE.BufferGeometry();
+    var positions = new Float32Array(this.totalFlightSteps * 3); // 3 vertices per point
+    const line = new THREE.Line(geometry, lineMaterial);
+    scene.add(line);
+
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
@@ -48,9 +57,9 @@ export class AppComponent implements OnInit {
       new THREE.SphereGeometry(10),
       jupiterMaterial
     );
-    jupiter.position.x = flightData.earthCoordinates.X - 25;
-    jupiter.position.y = flightData.earthCoordinates.Y - 0;
-    jupiter.position.z = flightData.earthCoordinates.Z - 25;
+    jupiter.position.x = -100;
+    jupiter.position.y = -0;
+    jupiter.position.z = -100;
     // jupiter.position.x = flightData.jupiterCoordinates.X;
     // jupiter.position.y = flightData.jupiterCoordinates.Y;
     // jupiter.position.z = flightData.jupiterCoordinates.Z;
@@ -97,18 +106,20 @@ export class AppComponent implements OnInit {
     const controls = new OrbitControls(camera, renderer.domElement);
     let flightStep = 1;
     setInterval(() => {
-      // console.log('Camera', camera.position);
+      // console.log(camera.position);
+      // console.log(camera.rotation);
       // console.log('Jupiter', jupiter.position);
       // console.log('Distance to Jupiter.');
       console.log(
-        Math.abs(jupiter.position.x - camera.position.x),
-        Math.abs(jupiter.position.y - camera.position.y),
-        Math.abs(jupiter.position.z - camera.position.z));
+        // Math.abs(jupiter.position.x - camera.position.x),
+        // Math.abs(jupiter.position.y - camera.position.y),
+        // Math.abs(jupiter.position.z - camera.position.z)
+      );
       // camera.position.setX(flightData.flightCoordinates[flightStep].X - flightData.flightCoordinates[flightStep - 1].X);
       // camera.position.setY(flightData.flightCoordinates[flightStep].Y - flightData.flightCoordinates[flightStep - 1].Y);
       // camera.position.setZ(flightData.flightCoordinates[flightStep].Z - flightData.flightCoordinates[flightStep - 1].Z);
       flightStep++;
-    }, 3000);
+    }, 10000);
     const animateGeometry = () => {
       const elapsedTime = clock.getElapsedTime();
 
