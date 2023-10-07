@@ -111,7 +111,6 @@ export class AppComponent implements OnInit {
     });
     const clock = new THREE.Clock();
     const controls = new OrbitControls(camera, renderer.domElement);
-    console.log(this.totalFlightSteps);
 
     const drawingInterval = setInterval(() => {
       const points = [];
@@ -129,7 +128,6 @@ export class AppComponent implements OnInit {
       const line = new THREE.Line(geometry, lineMaterial);
       scene.add(line);
       this.flightStep++;
-      console.log(this.flightStep);
       if (this.flightStep === this.totalFlightSteps) {
         console.log(flightData.flightCoordinates[this.flightStep - 1].X)
         console.log(flightData.flightCoordinates[this.flightStep - 1].Y)
