@@ -62,8 +62,8 @@ export class AppComponent implements OnInit {
       jupiterMaterial
     );
     jupiter.position.x = flightData.jupiterCoordinates.X - 7100;
-    jupiter.position.y = flightData.jupiterCoordinates.Y;
-    jupiter.position.z = flightData.jupiterCoordinates.Z;
+    jupiter.position.y = -flightData.jupiterCoordinates.Z;
+    jupiter.position.z = flightData.jupiterCoordinates.Y;
 
     const europaMaterial = new THREE.MeshStandardMaterial({
       map: new THREE.TextureLoader().load('../assets/europa.jpg'),
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
     );
     moon.position.x = earth.position.x - 1500;
     moon.position.y = earth.position.y;
-    moon.position.x = earth.position.z - 1500;
+    moon.position.x = earth.position.z - 1500; //???
     // jupiter.position.x = flightData.jupiterCoordinates.X;
     // jupiter.position.y = flightData.jupiterCoordinates.Y;
     // jupiter.position.z = flightData.jupiterCoordinates.Z;
@@ -100,9 +100,9 @@ export class AppComponent implements OnInit {
       0.001,
       100000000
     );
-    camera.position.setX(flightData.flightCoordinates[0].X - flightData.earthCoordinates.X + 1000);
-    camera.position.setY(flightData.flightCoordinates[0].Y - flightData.earthCoordinates.Y);
-    camera.position.setZ(flightData.flightCoordinates[0].Z - flightData.earthCoordinates.Z + 1000);
+    camera.position.setX(flightData.flightCoordinates[0].X);
+    camera.position.setY(flightData.flightCoordinates[0].Y);
+    camera.position.setZ(flightData.flightCoordinates[0].Z);
 
     scene.add(earth, jupiter, moon, europa, camera);
 
@@ -130,19 +130,21 @@ export class AppComponent implements OnInit {
     const controls = new OrbitControls(camera, renderer.domElement);
 
     const drawingInterval = setInterval(() => {
-      camera.position.x += 50;
-      camera.position.y += 50;
-      camera.position.z += 50;
+   
+      // camera.position.x += 50;
+      // camera.position.y += 50;
+      // camera.position.z += 50;
       const points = [];
       points.push(new THREE.Vector3(
         flightData.flightCoordinates[this.flightStep - 1].X + - 7100,
-        flightData.flightCoordinates[this.flightStep - 1].Y,
-        flightData.flightCoordinates[this.flightStep - 1].Z - 1300)
+       - flightData.flightCoordinates[this.flightStep - 1].Z,
+        flightData.flightCoordinates[this.flightStep - 1].Y - 1300)
       );
+      
       points.push(new THREE.Vector3(
         flightData.flightCoordinates[this.flightStep].X + - 7100,
-        flightData.flightCoordinates[this.flightStep].Y,
-        flightData.flightCoordinates[this.flightStep].Z - 1300,
+       - flightData.flightCoordinates[this.flightStep].Z,
+        flightData.flightCoordinates[this.flightStep].Y - 1300,
       ));
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
       const line = new THREE.Line(geometry, lineMaterial);
@@ -157,14 +159,14 @@ export class AppComponent implements OnInit {
         console.log(flightData.jupiterCoordinates.Z)
         clearInterval(drawingInterval);
       }
-    }, 50);
+    }, 200);
 
     const animateGeometry = () => {
       const elapsedTime = clock.getElapsedTime();
 
       // Update animation objects
-
-      earth.rotation.x = 90 * this.radianConversion;
+     // camera.rotation.z = 90 * this.radianConversion;
+      earth.rotation.x = 180 * this.radianConversion;
       earth.rotation.y = elapsedTime * this.radianConversion * 50;
       earth.rotation.z = 12.5 * this.radianConversion;
 
