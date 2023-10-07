@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
       new THREE.SphereGeometry(1100),
       jupiterMaterial
     );
-    jupiter.position.x = flightData.jupiterCoordinates.X -7100;
+    jupiter.position.x = flightData.jupiterCoordinates.X - 7100;
     jupiter.position.y = flightData.jupiterCoordinates.Y;
     jupiter.position.z = flightData.jupiterCoordinates.Z;
 
@@ -90,25 +90,23 @@ export class AppComponent implements OnInit {
     // jupiter.position.y = flightData.jupiterCoordinates.Y;
     // jupiter.position.z = flightData.jupiterCoordinates.Z;
 
-    scene.add(earth, jupiter, moon, europa);
-
     const canvasSizes = {
       width: window.innerWidth,
       height: window.innerHeight,
     };
-
     const camera = new THREE.PerspectiveCamera(
       350,
       canvasSizes.width / canvasSizes.height,
       0.001,
       100000000
     );
-    camera.position.setX(flightData.flightCoordinates[0].X );
-    camera.position.setY(flightData.flightCoordinates[0].Y);
-    camera.position.setZ(flightData.flightCoordinates[0].Z);
-    scene.add(camera);
+    camera.position.setX(flightData.flightCoordinates[0].X - flightData.earthCoordinates.X + 1000);
+    camera.position.setY(flightData.flightCoordinates[0].Y - flightData.earthCoordinates.Y);
+    camera.position.setZ(flightData.flightCoordinates[0].Z - flightData.earthCoordinates.Z + 1000);
 
-    
+    scene.add(earth, jupiter, moon, europa, camera);
+
+
 
     if (!canvas) {
       return;
@@ -123,10 +121,8 @@ export class AppComponent implements OnInit {
     window.addEventListener('resize', () => {
       canvasSizes.width = window.innerWidth;
       canvasSizes.height = window.innerHeight;
-
+      console.log('resized');
       camera.aspect = canvasSizes.width / canvasSizes.height;
-      camera.updateProjectionMatrix();
-
       renderer.setSize(canvasSizes.width, canvasSizes.height);
       renderer.render(scene, camera);
     });
@@ -134,9 +130,9 @@ export class AppComponent implements OnInit {
     const controls = new OrbitControls(camera, renderer.domElement);
 
     const drawingInterval = setInterval(() => {
-      camera.position.x +=50;
-      camera.position.y+=50;
-      camera.position.z +=50;
+      camera.position.x += 50;
+      camera.position.y += 50;
+      camera.position.z += 50;
       const points = [];
       points.push(new THREE.Vector3(
         flightData.flightCoordinates[this.flightStep - 1].X + - 7100,
@@ -161,7 +157,7 @@ export class AppComponent implements OnInit {
         console.log(flightData.jupiterCoordinates.Z)
         clearInterval(drawingInterval);
       }
-    }, 200);
+    }, 50);
 
     const animateGeometry = () => {
       const elapsedTime = clock.getElapsedTime();
