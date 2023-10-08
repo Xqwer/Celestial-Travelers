@@ -64,3 +64,30 @@
   right: 30px;
   color: bisque;
 }
+
+#div-footer {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+
+#footer {
+  position: absolute;
+  z-index: 2;
+  margin-left: auto;
+  bottom: 5px;
+  color: white;
+}
+
+// #right-footer {
+//   position: absolute;
+//   z-index: 2;
+//   margin-right: auto;
+//   right: 0;
+//   bottom: 5px;
+//   color: white;
+// }
