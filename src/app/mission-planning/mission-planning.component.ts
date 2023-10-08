@@ -118,7 +118,7 @@ export class MissionPlanningComponent implements AfterViewInit {
     brScene.add(brCamera);
 
     if (!canvas || !blCanvas || !brCanvas) {
-      console.log('Whoops');
+      console.error('Canvas HTML elements not rendered.');
       return;
     }
 
@@ -174,7 +174,7 @@ export class MissionPlanningComponent implements AfterViewInit {
     animateGeometry();
   }
 
-  moveCamera() {
+  goToSimulation() {
     this.router.navigate(['mission_simulation']);
   }
 }

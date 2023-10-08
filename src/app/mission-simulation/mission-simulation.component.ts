@@ -1,9 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import flightData from '../../assets/GMAT_Earth_to_Jupiter.json';
 import moonC from '../../assets/moon.json';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-mission-simulation',
@@ -140,7 +140,6 @@ export class MissionSimulationComponent implements OnInit {
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
       const line = new THREE.Line(geometry, lineMaterial);
       scene.add(line);
-      console.log(this.flightStep)
       this.flightStep++;
       if (this.flightStep === this.totalFlightSteps) {
         clearInterval(drawingInterval);
