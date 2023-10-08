@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import flightData from '../../assets/GMAT_Earth_to_Jupiter.json'
+import moonC from '../../assets/moon.json'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import Stats from 'three/examples/jsm/libs/stats.module'
 
@@ -14,6 +15,7 @@ export class MissionSimulationComponent implements OnInit {
   radianConversion = 0.01745328627927;
   totalFlightSteps = flightData.flightCoordinates.length;
   flightStep = 2;
+  moonStep = 1;
   points = [];
   ngOnInit(): void {
     this.createThreeJsBox();
@@ -39,21 +41,18 @@ export class MissionSimulationComponent implements OnInit {
       map: new THREE.TextureLoader().load('../assets/earth2.jpg'),
     });
     const earth = new THREE.Mesh(
-      new THREE.SphereGeometry(100),
+      new THREE.SphereGeometry(150),
       earthMaterial
     );
     earth.position.x = -7100;
     earth.position.y = 0;
     earth.position.z = -1300;
-    // earth.position.x = flightData.earthCoordinates.X;
-    // earth.position.y = flightData.earthCoordinates.Y;
-    // earth.position.z = flightData.earthCoordinates.Z;
 
     const jupiterMaterial = new THREE.MeshStandardMaterial({
       map: new THREE.TextureLoader().load('../assets/jupiterHD.jpg'),
     });
     const jupiter = new THREE.Mesh(
-      new THREE.SphereGeometry(1100),
+      new THREE.SphereGeometry(1320),
       jupiterMaterial
     );
     jupiter.position.x = flightData.jupiterCoordinates.X - 7100;
@@ -64,7 +63,7 @@ export class MissionSimulationComponent implements OnInit {
       map: new THREE.TextureLoader().load('../assets/europa.jpg'),
     });
     const europa = new THREE.Mesh(
-      new THREE.SphereGeometry(1100 / 44.79),
+      new THREE.SphereGeometry(1.2 * 1100 / 44.79),
       europaMaterial
     );
     europa.position.x = flightData.jupiterCoordinates.X + 2000;
@@ -75,15 +74,12 @@ export class MissionSimulationComponent implements OnInit {
       map: new THREE.TextureLoader().load('../assets/moon.jpg'),
     });
     const moon = new THREE.Mesh(
-      new THREE.SphereGeometry(25),
+      new THREE.SphereGeometry(/*37.5*/100),
       moonMaterial
     );
-    moon.position.x = earth.position.x - 1500;
-    moon.position.y = earth.position.y;
-    moon.position.z = earth.position.z;
-    // jupiter.position.x = flightData.jupiterCoordinates.X;
-    // jupiter.position.y = flightData.jupiterCoordinates.Y;
-    // jupiter.position.z = flightData.jupiterCoordinates.Z;
+    moon.position.x = (moonC.coordinates[0].X) / 3.3 + earth.position.x;
+    moon.position.y = (-moonC.coordinates[0].Z) / 2.3;
+    moon.position.z = (moonC.coordinates[0].Y) / 2.3 + earth.position.z;
 
     const canvasSizes = {
       width: window.innerWidth,
@@ -122,9 +118,7 @@ export class MissionSimulationComponent implements OnInit {
     const controls = new OrbitControls(camera, renderer.domElement);
 
     const drawingInterval = setInterval(() => {
-      // camera.position.x += 50;
-      // camera.position.y += 50;
-      // camera.position.z += 50;
+
       const points = [];
       points.push(new THREE.Vector3(
         flightData.flightCoordinates[this.flightStep - 1].X + - 7100,
@@ -136,28 +130,40 @@ export class MissionSimulationComponent implements OnInit {
         -flightData.flightCoordinates[this.flightStep].Z,
         flightData.flightCoordinates[this.flightStep].Y - 1300,
       ));
+
+
+
+
+
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
       const line = new THREE.Line(geometry, lineMaterial);
       scene.add(line);
+      console.log(this.flightStep)
       this.flightStep++;
       if (this.flightStep === this.totalFlightSteps) {
-        console.log(flightData.flightCoordinates[this.flightStep - 1].X)
-        console.log(flightData.flightCoordinates[this.flightStep - 1].Y)
-        console.log(flightData.flightCoordinates[this.flightStep - 1].Z)
-        console.log(flightData.jupiterCoordinates.X)
-        console.log(flightData.jupiterCoordinates.Y)
-        console.log(flightData.jupiterCoordinates.Z)
         clearInterval(drawingInterval);
       }
     }, 50);
 
+
+    const drawingMoon = setInterval(() => {
+      moon.position.x = (moonC.coordinates[this.moonStep % moonC.coordinates.length].X) / 3.3 + earth.position.x;
+      moon.position.y = (-moonC.coordinates[this.moonStep % moonC.coordinates.length].Z) / 2.3;
+      moon.position.z = (moonC.coordinates[this.moonStep % moonC.coordinates.length].Y) / 2.3 + earth.position.z;
+
+      this.moonStep++;
+    }, 50);
+
+
     const animateGeometry = () => {
       const elapsedTime = clock.getElapsedTime();
 
+
+
       // Update animation objects
       if (this.flightStep !== this.totalFlightSteps) {
-        camera.position.x -= 65 * elapsedTime;
-        camera.position.z -= (2 + 9* elapsedTime + 2*elapsedTime^2);
+        camera.position.x -= 68 * elapsedTime;
+        camera.position.z -= (2 + 9 * elapsedTime + 3 * elapsedTime ^ 2);
       }
       earth.rotation.x = 180 * this.radianConversion;
       earth.rotation.y = elapsedTime * this.radianConversion * 50;
@@ -173,9 +179,6 @@ export class MissionSimulationComponent implements OnInit {
       // Call animateGeometry again on the next frame
       window.requestAnimationFrame(animateGeometry);
     };
-
-    // camera.position.x += 1;
-    // camera.position.y += 1;
 
     animateGeometry();
   }
