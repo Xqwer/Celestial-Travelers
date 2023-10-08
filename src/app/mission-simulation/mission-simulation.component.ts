@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import flightData from '../../assets/GMAT_Earth_to_Jupiter.json'
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 @Component({
   selector: 'app-mission-simulation',
@@ -22,14 +24,7 @@ export class MissionSimulationComponent implements OnInit {
     const canvas = document.getElementById('canvas-box');
     const scene = new THREE.Scene();
     const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
-
-    const galaxyGeometry = new THREE.SphereGeometry(24000, 640, 640);
-    const galaxyMaterial = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load('../assets/stars_and_milky.jpg'),
-      side: THREE.BackSide,
-    })
-    const galaxyMesh = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
-    // scene.add(galaxyMesh);
+    scene.add(new THREE.AxesHelper(2000));
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);

@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/celestial-travelers",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
