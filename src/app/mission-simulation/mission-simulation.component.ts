@@ -14,6 +14,7 @@ export class MissionSimulationComponent implements OnInit {
   totalFlightSteps = flightData.flightCoordinates.length;
   flightStep = 2;
   moonStep = 1;
+  date = new Date();
   points = [];
   ngOnInit(): void {
     this.createThreeJsBox();
@@ -128,10 +129,6 @@ export class MissionSimulationComponent implements OnInit {
         -flightData.flightCoordinates[this.flightStep].Z,
         flightData.flightCoordinates[this.flightStep].Y - 1300,
       ));
-
-
-
-
 
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
       const line = new THREE.Line(geometry, lineMaterial);
