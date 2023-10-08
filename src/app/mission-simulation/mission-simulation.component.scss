@@ -10,11 +10,25 @@
   height: 100%;
 }
 
-#top-left-info-div {
+#top-right-info-div {
   position: absolute;
   z-index: 1;
-  width: 100%;
   top: 0;
   right: 0;
   color: white;
+}
+
+#top-left-back-div {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  color: white;
+}
+
+.back-button {
+  margin-top: 15px;
+  margin-left: 15px;
+  color: black;
+  background-color: 0x000000;
 }
