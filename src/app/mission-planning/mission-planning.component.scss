@@ -1,0 +1,66 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.innerContainer {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+  width: 100%;
+  height: 100;
+  top: 10%;
+  margin-top: auto;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.bottom_right_canvas {
+  position: absolute;
+  z-index: 1;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+}
+
+.bottom_left_canvas {
+  position: absolute;
+  z-index: 1;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 0;
+}
+
+#bottom_left_canvas_div {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 30px;
+  color: dodgerblue;
+}
+
+#bottom_right_canvas_div {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 30px;
+  color: bisque;
+}
