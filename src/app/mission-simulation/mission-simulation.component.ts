@@ -145,7 +145,7 @@ export class MissionSimulationComponent implements OnInit {
       if (this.flightStep === this.totalFlightSteps) {
         clearInterval(drawingInterval);
       }
-    }, 100);
+    }, 70);
 
     setInterval(() => {
       moon.position.x = (moonC.coordinates[this.moonStep % moonC.coordinates.length].X) / 3.3 + earth.position.x;
