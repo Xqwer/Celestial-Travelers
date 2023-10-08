@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import * as THREE from 'three';
 import flightData from '../../assets/GMAT_Earth_to_Jupiter.json';
 
-
 @Component({
   selector: 'app-mission-planning',
   templateUrl: './mission-planning.component.html',
@@ -159,16 +158,7 @@ export class MissionPlanningComponent implements AfterViewInit {
     });
     const clock = new THREE.Clock();
 
-    setInterval(() => {
-      console.log(earthMesh.rotation);
-      console.log(this.blCamera.rotation);
-    }, 5000)
-
-
     const animateGeometry = () => {
-      const elapsedTime = clock.getElapsedTime();
-      // earthMesh.rotation.y = elapsedTime * this.radianConversion * 50;
-
       earthMesh.rotateY(0.005);
       europaMesh.rotateY(0.005);
       camera.rotateX(0.001);
@@ -182,8 +172,6 @@ export class MissionPlanningComponent implements AfterViewInit {
       window.requestAnimationFrame(animateGeometry);
     };
     animateGeometry();
-    // camera.position.x += 1;
-    // camera.position.y += 1;
   }
 
   moveCamera() {
