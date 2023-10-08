@@ -85,7 +85,7 @@ export class MissionSimulationComponent implements OnInit {
     );
     moon.position.x = earth.position.x - 1500;
     moon.position.y = earth.position.y;
-    moon.position.x = earth.position.z - 1500;
+    moon.position.z = earth.position.z;
     // jupiter.position.x = flightData.jupiterCoordinates.X;
     // jupiter.position.y = flightData.jupiterCoordinates.Y;
     // jupiter.position.z = flightData.jupiterCoordinates.Z;
@@ -160,7 +160,10 @@ export class MissionSimulationComponent implements OnInit {
       const elapsedTime = clock.getElapsedTime();
 
       // Update animation objects
-
+      if (this.flightStep !== this.totalFlightSteps) {
+        camera.position.x -= 65 * elapsedTime;
+        camera.position.z -= (2 + 9* elapsedTime + 2*elapsedTime^2);
+      }
       earth.rotation.x = 180 * this.radianConversion;
       earth.rotation.y = elapsedTime * this.radianConversion * 50;
       earth.rotation.z = 12.5 * this.radianConversion;
