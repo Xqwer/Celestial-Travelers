@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import flightData from '../../assets/GMAT_Earth_to_Jupiter.json'
-import moonC from '../../assets/moon.json'
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
-import Stats from 'three/examples/jsm/libs/stats.module'
+import flightData from '../../assets/GMAT_Earth_to_Jupiter.json';
+import moonC from '../../assets/moon.json';
 
 @Component({
   selector: 'app-mission-simulation',
