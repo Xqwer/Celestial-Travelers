@@ -46,17 +46,7 @@ export class MissionSimulationComponent implements OnInit {
     earth.position.y = 0;
     earth.position.z = -1300;
 
-    const jupiterMaterial = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load('../assets/jupiterHD.jpg'),
-    });
-    const jupiter = new THREE.Mesh(
-      new THREE.SphereGeometry(1320),
-      jupiterMaterial
-    );
-    jupiter.position.x = flightData.jupiterCoordinates.X - 1000;
-    jupiter.position.y = - flightData.jupiterCoordinates.Z;
-    jupiter.position.z = flightData.jupiterCoordinates.Y;
-
+   
     const europaMaterial = new THREE.MeshStandardMaterial({
       map: new THREE.TextureLoader().load('../assets/europa.jpg'),
     });
@@ -68,11 +58,24 @@ export class MissionSimulationComponent implements OnInit {
     europa.position.y = - flightData.jupiterCoordinates.Z;
     europa.position.z = flightData.jupiterCoordinates.Y-1300;
 
+
+    const jupiterMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load('../assets/jupiterHD.jpg'),
+    });
+    const jupiter = new THREE.Mesh(
+      new THREE.SphereGeometry(1320),
+      jupiterMaterial
+    );
+    jupiter.position.x = europa.position.x+4000;
+    jupiter.position.y = europa.position.y+2000;
+    jupiter.position.z = europa.position.z;
+
+
     const moonMaterial = new THREE.MeshStandardMaterial({
       map: new THREE.TextureLoader().load('../assets/moon.jpg'),
     });
     const moon = new THREE.Mesh(
-      new THREE.SphereGeometry(/*37.5*/100),
+      new THREE.SphereGeometry(100),
       moonMaterial
     );
     moon.position.x = (moonC.coordinates[0].X) / 3.3 + earth.position.x;
