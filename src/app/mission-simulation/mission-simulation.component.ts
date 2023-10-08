@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import flightData from '../../assets/GMAT_Earth_to_Jupiter.json';
 import moonC from '../../assets/moon.json';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-mission-simulation',
@@ -14,7 +15,13 @@ export class MissionSimulationComponent implements OnInit {
   totalFlightSteps = flightData.flightCoordinates.length;
   flightStep = 2;
   moonStep = 1;
+  date = new Date().getTime();
+  arrivalDate = new Date().getTime() + 1000 * 60 * 60 * 24 * 365 * 3;
+  dateDifference = this.arrivalDate - this.date;
+  dateStep = this.dateDifference / this.totalFlightSteps;
   points = [];
+
+  constructor(private location: Location) { }
   ngOnInit(): void {
     this.createThreeJsBox();
   }
@@ -24,7 +31,7 @@ export class MissionSimulationComponent implements OnInit {
     const canvas = document.getElementById('canvas-box');
     const scene = new THREE.Scene();
     const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
-    scene.add(new THREE.AxesHelper(2000));
+    // scene.add(new THREE.AxesHelper(5000));
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
@@ -51,12 +58,12 @@ export class MissionSimulationComponent implements OnInit {
       map: new THREE.TextureLoader().load('../assets/europa.jpg'),
     });
     const europa = new THREE.Mesh(
-      new THREE.SphereGeometry(5*1.2 * 1100 / 44.79),
+      new THREE.SphereGeometry(5 * 1.2 * 1100 / 44.79),
       europaMaterial
     );
-    europa.position.x = flightData.jupiterCoordinates.X-7100;
+    europa.position.x = flightData.jupiterCoordinates.X - 7100;
     europa.position.y = - flightData.jupiterCoordinates.Z;
-    europa.position.z = flightData.jupiterCoordinates.Y-1300;
+    europa.position.z = flightData.jupiterCoordinates.Y - 1300;
 
 
     const jupiterMaterial = new THREE.MeshStandardMaterial({
@@ -116,7 +123,7 @@ export class MissionSimulationComponent implements OnInit {
       renderer.render(scene, camera);
     });
     const clock = new THREE.Clock();
-    const controls = new OrbitControls(camera, renderer.domElement);
+    new OrbitControls(camera, renderer.domElement);
 
     const drawingInterval = setInterval(() => {
 
@@ -132,10 +139,7 @@ export class MissionSimulationComponent implements OnInit {
         flightData.flightCoordinates[this.flightStep].Y - 1300,
       ));
 
-
-
-
-
+      this.date += this.dateStep;
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
       const line = new THREE.Line(geometry, lineMaterial);
       scene.add(line);
@@ -144,10 +148,9 @@ export class MissionSimulationComponent implements OnInit {
       if (this.flightStep === this.totalFlightSteps) {
         clearInterval(drawingInterval);
       }
-    }, 50);
+    }, 70);
 
-
-    const drawingMoon = setInterval(() => {
+    setInterval(() => {
       moon.position.x = (moonC.coordinates[this.moonStep % moonC.coordinates.length].X) / 3.3 + earth.position.x;
       moon.position.y = (-moonC.coordinates[this.moonStep % moonC.coordinates.length].Z) / 2.3;
       moon.position.z = (moonC.coordinates[this.moonStep % moonC.coordinates.length].Y) / 2.3 + earth.position.z;
@@ -159,12 +162,10 @@ export class MissionSimulationComponent implements OnInit {
     const animateGeometry = () => {
       const elapsedTime = clock.getElapsedTime();
 
-
-
       // Update animation objects
       if (this.flightStep !== this.totalFlightSteps) {
         camera.position.x -= 70 * elapsedTime;
-        camera.position.z -= (2 + 9 * elapsedTime + 5 * elapsedTime ^ 2 );
+        camera.position.z -= (2 + 9 * elapsedTime + 5 * elapsedTime ^ 2);
       }
       earth.rotation.x = 180 * this.radianConversion;
       earth.rotation.y = elapsedTime * this.radianConversion * 50;
@@ -182,5 +183,9 @@ export class MissionSimulationComponent implements OnInit {
     };
 
     animateGeometry();
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

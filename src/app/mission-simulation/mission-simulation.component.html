@@ -2,3 +2,11 @@
   <canvas id="canvas-box" class="canvas">
   </canvas>
 </div>
+<div id="top-left-back-div">
+  <button class="back-button" (click)="goBack()">Go back</button>
+</div>
+<div id="top-right-info-div">
+  <div class="field">
+    <h2 style="margin-top: 15px; margin-right: 15px;">{{date | date: 'MMMM YYYY'}}</h2>
+  </div>
+</div>
