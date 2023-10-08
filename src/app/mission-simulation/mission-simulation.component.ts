@@ -40,7 +40,7 @@ export class MissionSimulationComponent implements OnInit {
       map: new THREE.TextureLoader().load('../assets/earth2.jpg'),
     });
     const earth = new THREE.Mesh(
-      new THREE.SphereGeometry(150),
+      new THREE.SphereGeometry(250),
       earthMaterial
     );
     earth.position.x = -7100;
@@ -54,7 +54,7 @@ export class MissionSimulationComponent implements OnInit {
       new THREE.SphereGeometry(1320),
       jupiterMaterial
     );
-    jupiter.position.x = flightData.jupiterCoordinates.X - 7100;
+    jupiter.position.x = flightData.jupiterCoordinates.X - 1000;
     jupiter.position.y = - flightData.jupiterCoordinates.Z;
     jupiter.position.z = flightData.jupiterCoordinates.Y;
 
@@ -62,12 +62,12 @@ export class MissionSimulationComponent implements OnInit {
       map: new THREE.TextureLoader().load('../assets/europa.jpg'),
     });
     const europa = new THREE.Mesh(
-      new THREE.SphereGeometry(1.2 * 1100 / 44.79),
+      new THREE.SphereGeometry(5*1.2 * 1100 / 44.79),
       europaMaterial
     );
-    europa.position.x = flightData.jupiterCoordinates.X + 2000;
-    europa.position.y = flightData.jupiterCoordinates.Y + 2000;
-    europa.position.z = flightData.jupiterCoordinates.Z + 2000;
+    europa.position.x = flightData.jupiterCoordinates.X-7100;
+    europa.position.y = - flightData.jupiterCoordinates.Z;
+    europa.position.z = flightData.jupiterCoordinates.Y-1300;
 
     const moonMaterial = new THREE.MeshStandardMaterial({
       map: new THREE.TextureLoader().load('../assets/moon.jpg'),
@@ -157,8 +157,8 @@ export class MissionSimulationComponent implements OnInit {
 
       // Update animation objects
       if (this.flightStep !== this.totalFlightSteps) {
-        camera.position.x -= 68 * elapsedTime;
-        camera.position.z -= (2 + 9 * elapsedTime + 3 * elapsedTime ^ 2);
+        camera.position.x -= 70 * elapsedTime;
+        camera.position.z -= (2 + 9 * elapsedTime + 5 * elapsedTime ^ 2 );
       }
       earth.rotation.x = 180 * this.radianConversion;
       earth.rotation.y = elapsedTime * this.radianConversion * 50;
